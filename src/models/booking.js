@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       status: {
-        type: DataTypes.INTEGENUMER,
+        type: DataTypes.INTEGER,
         values: [BOOKED, CANCELLED, INITTIATED, PENDING],
         defaultValue: INITTIATED,
         allowNull: false,
