@@ -111,8 +111,23 @@ async function cancelBooking(data) {
   }
 }
 
-module.exports = {
-    createBooking,
-    makePayment,
-    cancelBooking
+async function cancelOldBookings() {
+    // sets all the bookings with status:INITIATED to status:CANCELLED
+    try {
+        console.log("Cancelling all initiated bookings.")
+        const time = new Date( Date.now() - 1000*30 ) // time 5 mins
+
+        const response = await bookingRepository.cancelOldBookings(time);
+
+        return response;
+    } catch (error) {
+        console.log(error)
+    }
 }
+
+module.exports = {
+  createBooking,
+  makePayment,
+  cancelBooking,
+  cancelOldBookings,
+};
