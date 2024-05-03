@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes'); 
 const { Booking } = require('../models');
+const AppError = require("../utils/errors/app-error");
 
 const CrudRepository = require('./crud-repo');
 
@@ -13,25 +14,30 @@ class BookingRepository extends CrudRepository {
     return response;
   }
 
-  async get(data, transaction) {
+  async getBooking(data, transaction) {
+    console.log(data);
     const response = await this.model.findByPk(data, {
       transaction: transaction,
     });
-    if (!response) {
-      throw new AppError(
-        "Not able to find the resource",
-        StatusCodes.NOT_FOUND
-      );
-    }
+    // if (!response) {
+    //   throw new AppError(
+    //     "Not able to find the resource",
+    //     StatusCodes.NOT_FOUND
+    //   );
+    // }
     return response;
   }
 
-  async update(id, data, transaction) {
-    const response = await this.model.update(data, {
+  async updateBooking(id, data, transaction) {
+    const response = await this.model.update(
+      data,
+      {
         where: {
           id: id,
         },
-      }, { transaction: transaction });
+      },
+      { transaction: transaction }
+    );
     if (!response[0]) {
       throw new AppError(
         "Not able to find the resource",
