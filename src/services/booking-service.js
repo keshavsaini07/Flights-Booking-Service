@@ -39,6 +39,12 @@ async function makePayment(data) {
   try {
     const bookingDetails = await bookingRepository.getBooking(data.bookingId, transaction);
 
+    // if(bookingDetails.status == BOOKED){
+    //     throw new AppError(
+    //     "The payment has already been successfull",
+    //     StatusCodes.BAD_REQUEST
+    //     );
+    // }
     if(bookingDetails.status == CANCELLED){
         cancelBooking(data.bookingId);
         throw new AppError(
@@ -51,12 +57,16 @@ async function makePayment(data) {
     const bookingTime = new Date(bookingDetails.createdAt);
     const currentTime = new Date();
 
-    if(currentTime - bookingTime > 300000){
-        await bookingRepository.updateBooking(data.bookingId, {status: CANCELLED}, transaction);
-        throw new AppError(
+    if (currentTime - bookingTime > 300000) {
+      await bookingRepository.updateBooking(
+        data.bookingId,
+        { status: CANCELLED },
+        transaction
+      );
+      throw new AppError(
         "The payment session has been expired",
         StatusCodes.BAD_REQUEST
-        );
+      );
     }
 
     if(bookingDetails.totalCost != data.totalCost){
