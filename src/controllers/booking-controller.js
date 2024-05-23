@@ -14,7 +14,7 @@ async function createBooking(req, res) {
     SuccessResponse.data = booking;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
-    // console.log("Controller catching Error: ", error)
+    console.log("Controller catching Error: ", error)
     ErrorResponse.error = error;
     return res.status(error.statusCode).json(ErrorResponse);
   }
@@ -42,6 +42,7 @@ async function makePayment(req, res) {
     SuccessResponse.data = response;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
+    console.log(error)
     ErrorResponse.error = error;
     return res.status(error.statusCode).json(ErrorResponse);
   }
